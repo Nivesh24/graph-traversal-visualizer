@@ -11,3 +11,12 @@
     height: 100%;
     border: 1px solid black;
 }
+.wall{
+    background-color:#1c2833;
+}
+.start-node{
+    background-color:rgb(26, 170, 7);
+}
+.target-node{
+    background-color:red;
+}
