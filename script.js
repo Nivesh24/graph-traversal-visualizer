@@ -45,7 +45,7 @@ const target=document.querySelector('[data-row="10"][data-col="40"]');
 start.classList.add("start-node");
 target.classList.add("target-node");
 
-async function executeBFS(){
+
     let startRow=parseInt(start.dataset.row);
     let startCol=parseInt(start.dataset.col);
 
@@ -53,10 +53,20 @@ async function executeBFS(){
     let targetCol = parseInt(target.dataset.col);
 
 
+
+async function executeBFS(){
+
     let visited=[];
     for(let i =0;i<20;i++){
         visited.push(Array(50).fill(false));
     }
+
+    let parent=[];
+    for(let i=0;i<20;i++){
+        parent.push(Array(50).fill(null));
+    }
+    parent[startRow][startCol]=null;
+
     let queue=[];
     queue.push([startRow,startCol]);
     visited[startRow][startCol]=true;
@@ -75,17 +85,59 @@ async function executeBFS(){
             currentCell.classList.add("visited");
         }
 
-        await sleep(100);
+        await sleep(10);
 
         for(let k=0;k<4;k++){
             let nr=i+dr[k];
             let nc=j+dc[k];
             if(nr>=0&&nr<20&&nc>=0&&nc<50&&visited[nr][nc]===false){
                 let neigh=document.querySelector(`[data-row="${nr}"][data-col="${nc}"]`)
-                if(nr==targetRow&&nc==targetCol) return;
-                if(!neigh.classList.contains("wall")){queue.push([nr,nc]);
-                visited[nr][nc]=true;}
+                if(!neigh.classList.contains("wall")){
+                    queue.push([nr,nc]);
+                    visited[nr][nc]=true;
+                    parent[nr][nc]=[i,j];
+
+                    if(nr===targetRow && nc===targetCol){
+                        await drawPath(parent);
+                        return;
+                    }
+                }
             }
         }
     }
 }
+
+
+async function drawPath(parent){
+    let curr=parent[targetRow][targetCol];
+    
+    while(curr!=null){
+        let r=curr[0];
+        let c=curr[1];
+        if(r===startRow && c===startCol){
+            break;
+        }
+        let cell = document.querySelector(`[data-row="${r}"][data-col="${c}"]`);
+        cell.classList.add("path");
+        await sleep(20);
+        curr=parent[r][c];
+    }
+}
+
+function clearPath(){
+    let cells=document.querySelectorAll(".cell");
+    cells.forEach(cell => {
+        cell.classList.remove("visited","path");
+    });
+}
+
+function clearBoard(){
+    let cells=document.querySelectorAll(".cell");
+    cells.forEach(function(cell){
+        cell.classList.remove("visited","path","wall")
+    })
+}
+
+document.getElementById("start-btn").addEventListener("click",executeBFS);
+document.getElementById("clear-path-btn").addEventListener("click", clearPath);
+document.getElementById("clear-board-btn").addEventListener("click", clearBoard);
