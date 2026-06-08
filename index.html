@@ -6,7 +6,16 @@
     <body>
         <div  id="grid-container"></div>
         <div id="controls">
+            <select id="algo-select">
+                <option value="bfs">Breadth-First Search</option>
+                <option value="dfs">Depth-First Search</option>
+                <option value="dijkstra">Dijkstra</option>
+            </select>
             <button id="start-btn">Start BFS</button>
+
+            <button id="wall-btn">Draw Wall</button>
+            <button id="mud-btn">Draw Mud (Dijkstra Only)</button>
+            
             <button id="clear-path-btn">Clear Path</button>
             <button id="clear-board-btn">Clear Board</button>
         </div>
