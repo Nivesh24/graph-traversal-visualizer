@@ -1,6 +1,6 @@
 let abortSignal = false;
 let isRunning = false;
-let drawMode="wall";
+let drawMode="none";
 function sleep(ms) {
     return new Promise(function(resolve) {
         setTimeout(function(){
@@ -21,17 +21,29 @@ for(let row=0;row<20;row++){
 
         cell.addEventListener("mousedown",function(e){
             e.preventDefault();
+            if(isRunning) return;
             isDrawing=true;
             if(cell!==start&& cell!==target){
-                if(drawMode==="wall") cell.classList.add("wall");
-                else cell.classList.add("weight");
+                if(drawMode==="wall") {
+                    cell.classList.remove("weight");
+                    cell.classList.add("wall");
+                }
+                else if(drawMode==="weight" && !cell.classList.contains("wall")) {
+                    cell.classList.add("weight");
+                }
             }
         })
         cell.addEventListener("mouseenter",function(){
+            if(isRunning) return;
             if(isDrawing){ 
                 if(cell!==start&& cell!==target){
-                    if(drawMode==="wall") cell.classList.add("wall");
-                    else cell.classList.add("weight");
+                    if(drawMode==="wall") {
+                        cell.classList.remove("weight");
+                        cell.classList.add("wall");
+                    }
+                    else if(drawMode==="weight" && !cell.classList.contains("wall")) {
+                        cell.classList.add("weight");
+                    }
                 }
             }
         })
@@ -66,10 +78,13 @@ async function startAlgorithm(){
 
     abortSignal=false;
     clearPath();
+    isRunning=true;
     document.getElementById("start-btn").disabled=true;
+    document.getElementById("algo-select").disabled=true;
     document.getElementById("clear-path-btn").disabled=true;
     document.getElementById("clear-board-btn").disabled=true;
     abortSignal=false;
+    let currentAlgo=document.getElementById("algo-select").value;
     let visited=[];
     for(let i =0;i<20;i++){
         visited.push(Array(50).fill(false));
@@ -90,7 +105,6 @@ async function startAlgorithm(){
     while(queue.length>0){
         if(abortSignal) return;
 
-        let currentAlgo=document.getElementById("algo-select").value;
         let x;
         if(currentAlgo==="bfs") {
             x=queue.shift(); 
@@ -124,6 +138,7 @@ async function startAlgorithm(){
                         await drawPath(parent);
                         isRunning=false;
                         document.getElementById("start-btn").disabled=false;
+                        document.getElementById("algo-select").disabled=false;
                         document.getElementById("clear-path-btn").disabled=false;
                         document.getElementById("clear-board-btn").disabled=false;
                         return;
@@ -133,6 +148,7 @@ async function startAlgorithm(){
         }
     }
     document.getElementById("start-btn").disabled=false;
+    document.getElementById("algo-select").disabled=false;
     document.getElementById("clear-path-btn").disabled=false;
     document.getElementById("clear-board-btn").disabled=false;
     isRunning=false;
@@ -144,7 +160,9 @@ async function executeDijkstras(){
     isRunning=true;
     abortSignal=false;
     clearPath();
+    isRunning=true;
     document.getElementById("start-btn").disabled=true;
+    document.getElementById("algo-select").disabled=true;
     document.getElementById("clear-path-btn").disabled=true;
     document.getElementById("clear-board-btn").disabled=true;
     abortSignal=false;
@@ -179,6 +197,7 @@ async function executeDijkstras(){
         if(i===targetRow && j===targetCol){
             await drawPath(parent);
             document.getElementById("start-btn").disabled = false;
+            document.getElementById("algo-select").disabled = false;
             document.getElementById("clear-path-btn").disabled = false;
             document.getElementById("clear-board-btn").disabled = false;
             
@@ -217,6 +236,7 @@ async function executeDijkstras(){
         
     }
     document.getElementById("start-btn").disabled=false;
+    document.getElementById("algo-select").disabled=false;
     document.getElementById("clear-path-btn").disabled=false;
     document.getElementById("clear-board-btn").disabled=false;
     isRunning=false;
@@ -284,7 +304,12 @@ algoSelect.addEventListener("change", function(){
     } 
     else {
         mudBtn.disabled = true;  
-        drawMode = "wall"; 
+        drawMode = "none"; 
+        document.getElementById("wall-btn")
+        .classList.remove("active-tool");
+
+        document.getElementById("mud-btn")  
+        .classList.remove("active-tool");
     }
 });
 if (document.getElementById("algo-select").value !== "dijkstra") {
@@ -293,11 +318,23 @@ if (document.getElementById("algo-select").value !== "dijkstra") {
 
 
 document.getElementById("wall-btn").addEventListener("click",()=>{
+
     drawMode = "wall";
+
+    document.getElementById("wall-btn")
+            .classList.add("active-tool");
+
+    document.getElementById("mud-btn")
+            .classList.remove("active-tool");
 });
 
 document.getElementById("mud-btn").addEventListener("click",()=>{
+
     drawMode = "weight";
+
+    document.getElementById("mud-btn")
+            .classList.add("active-tool");
+
+    document.getElementById("wall-btn")
+            .classList.remove("active-tool");
 });
-
-

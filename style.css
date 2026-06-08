@@ -77,3 +77,12 @@
 .cell.weight.path {
     background-color: #FF8C00; 
 }
+
+#controls button:disabled{
+    opacity:0.5;
+    cursor:not-allowed;
+}
+
+.active-tool{
+    border:3px solid black !important;
+}
