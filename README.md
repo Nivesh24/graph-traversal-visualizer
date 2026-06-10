@@ -51,14 +51,6 @@ Through this project, I gained hands-on experience with:
 * State management
 * Interactive UI development
 
-## Future Improvements
-
-* A* Search Algorithm
-* Maze Generation
-* Node weight customization
-* Speed controls
-* Responsive mobile layout
-
 ## Author
 
 Nivesh Yadav
