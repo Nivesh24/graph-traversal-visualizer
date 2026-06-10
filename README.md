@@ -1,6 +1,6 @@
 # Pathfinding Visualizer
 
-A web-based Pathfinding Visualizer built using Vanilla JavaScript, HTML, and CSS. The project demonstrates how different graph traversal and shortest path algorithms explore a grid and find paths between a source node and a target node.
+A web-based Pathfinding Visualizer built using Vanilla JavaScript, HTML, and CSS. The project visualizes BFS, DFS, and Dijkstra's Algorithm on a grid, helping users understand graph traversal and shortest path computation through interactive animations.
 
 ## Features
 
@@ -15,6 +15,15 @@ A web-based Pathfinding Visualizer built using Vanilla JavaScript, HTML, and CSS
 * Shortest path reconstruction and visualization
 * Clear Path and Clear Board functionality
 * Tool selection and UI state management
+
+
+Project Structure
+
+├── index.html
+├── style.css
+├── script.js
+└── README.md
+
 
 ## Algorithms Implemented
 
@@ -50,6 +59,13 @@ Through this project, I gained hands-on experience with:
 * Asynchronous JavaScript (async/await)
 * State management
 * Interactive UI development
+
+* How to run
+1. Clone the repository
+2. Open the project folder
+3. Open index.html in a web browser
+
+No additional setup or dependencies are required.
 
 ## Author
 
